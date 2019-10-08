@@ -47,8 +47,11 @@ public class User {
     private SysUserDao sysUserDao;
 
     public List<SysUserEntity> queryAllUsers() {
-        log.debug("sysUserDao: {}", sysUserDao);
         return sysUserDao.queryAll();
+    }
+
+    public List<SysUserEntity> findAllUsers() {
+        return sysUserDao.findAll();
     }
 
     public boolean login(String loginId, String loginPwd) {
