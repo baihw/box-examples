@@ -29,7 +29,8 @@ CREATE TABLE `sys_user` (
   `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '记录修改时间',
   `update_user` char(32) default null comment '记录修改用户',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '标记已删除 0:否 1:是',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  unique key `uni_user_name`(`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户基础表';
 
 -- -------------------------------------------
@@ -81,7 +82,8 @@ create table if not exists `sys_permission`
         `update_user` char(32) default null comment '记录修改用户',
         `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '标记已删除 0:否 1:是',
 	primary key(`id`),
-        unique key `uni_permission_type_permission_name`(`permission_type`, `permission_code`)
+        unique key `uni_permission_code`(`permission_code`),
+        unique key `uni_permission_type_permission_code`(`permission_type`, `permission_code`)
 )engine=innodb default charset=utf8mb4 collate=utf8mb4_general_ci COMMENT='权限信息表';
 
 -- -------------------------------------------
@@ -105,6 +107,30 @@ create table if not exists `sys_role_permission_rel`
 -- 插入测试数据
 insert into sys_user(id, user_name, password) value( '89232296e8a911e9b3700242ac12010a', 'admin', 'admin');
 insert into sys_user(id, user_name, password) value( '0a19ba58e8ab11e9b3700242ac12010a', 'guest', '123456');
+
+insert into sys_role(id, role_name, role_memo) value( '87feedeae99911e99cb80242ac12010a', 'admin', '管理员');
+insert into sys_role(id, role_name, role_memo) value( 'add26716e99911e99cb80242ac12010a', 'guest', '来宾');
+
+insert into sys_permission(id, permission_code, permission_type) value('cde9ed55e99e11e99cb80242ac12010a', 'common_add', '01');
+insert into sys_permission(id, permission_code, permission_type) value('d3d3ebb3e99e11e99cb80242ac12010a', 'common_edit', '01');
+insert into sys_permission(id, permission_code, permission_type) value('d9775fb9e99e11e99cb80242ac12010a', 'common_delete', '01');
+insert into sys_permission(id, permission_code, permission_type) value('dd0d07dee99e11e99cb80242ac12010a', 'common_read', '01');
+
+insert into sys_user_role_rel(id, user_id, role_id) value('e062d8aee99e11e99cb80242ac12010a', '89232296e8a911e9b3700242ac12010a', '87feedeae99911e99cb80242ac12010a');
+insert into sys_user_role_rel(id, user_id, role_id) value('e70b8a96e99e11e99cb80242ac12010a', '0a19ba58e8ab11e9b3700242ac12010a', 'add26716e99911e99cb80242ac12010a');
+
+-- admin - all
+insert into sys_role_permission_rel(id, role_id, permission_id) value('e330e8eae99f11e99cb80242ac12010a', '87feedeae99911e99cb80242ac12010a', 'cde9ed55e99e11e99cb80242ac12010a');
+insert into sys_role_permission_rel(id, role_id, permission_id) value('eb2d9253e99f11e99cb80242ac12010a', '87feedeae99911e99cb80242ac12010a', 'd3d3ebb3e99e11e99cb80242ac12010a');
+insert into sys_role_permission_rel(id, role_id, permission_id) value('860fbfcfe9a011e99cb80242ac12010a', '87feedeae99911e99cb80242ac12010a', 'd9775fb9e99e11e99cb80242ac12010a');
+insert into sys_role_permission_rel(id, role_id, permission_id) value('b9a469b1e9a011e99cb80242ac12010a', '87feedeae99911e99cb80242ac12010a', 'dd0d07dee99e11e99cb80242ac12010a');
+-- guest - common_read
+insert into sys_role_permission_rel(id, role_id, permission_id) value('f697321be9a011e99cb80242ac12010a', 'add26716e99911e99cb80242ac12010a', 'dd0d07dee99e11e99cb80242ac12010a');
+
+
+
+
+
 
 
 

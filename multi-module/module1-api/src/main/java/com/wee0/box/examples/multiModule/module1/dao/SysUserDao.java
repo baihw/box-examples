@@ -16,7 +16,7 @@ import java.util.Map;
  * </pre>
  **/
 @BoxDao
-public interface SysUserDao extends IBaseDao<SysUserEntity, Integer> {
+public interface SysUserDao extends IBaseDao<SysUserEntity, String> {
 
     List<SysUserEntity> findAll();
 

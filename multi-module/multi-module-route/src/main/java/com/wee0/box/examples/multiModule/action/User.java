@@ -16,7 +16,6 @@
 
 package com.wee0.box.examples.multiModule.action;
 
-import com.wee0.box.beans.annotation.BoxAction;
 import com.wee0.box.beans.annotation.BoxInject;
 import com.wee0.box.examples.multiModule.module1.dao.SysUserDao;
 import com.wee0.box.examples.multiModule.module1.entity.SysUserEntity;
@@ -26,6 +25,10 @@ import com.wee0.box.log.LoggerFactory;
 import com.wee0.box.subject.IPasswordToken;
 import com.wee0.box.subject.ISubject;
 import com.wee0.box.subject.SubjectContext;
+import com.wee0.box.subject.annotation.BoxRequireLogical;
+import com.wee0.box.subject.annotation.BoxRequirePermissions;
+import com.wee0.box.subject.annotation.BoxRequireRoles;
+import com.wee0.box.web.annotation.BoxAction;
 
 import java.util.List;
 
@@ -46,12 +49,19 @@ public class User {
     @BoxInject
     private SysUserDao sysUserDao;
 
+    @BoxRequireRoles("admin")
     public List<SysUserEntity> queryAllUsers() {
         return sysUserDao.queryAll();
     }
 
+    @BoxRequireRoles(value = {"admin", "guest"}, logical = BoxRequireLogical.AND)
     public List<SysUserEntity> findAllUsers() {
         return sysUserDao.findAll();
+    }
+
+    @BoxRequirePermissions("common_delete")
+    public int deleteById(String userId) {
+        return sysUserDao.deleteById(userId);
     }
 
     public boolean login(String loginId, String loginPwd) {
