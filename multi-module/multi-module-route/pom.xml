@@ -18,6 +18,11 @@
             <groupId>com.wee0.box.examples</groupId>
             <artifactId>module1-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -17,9 +17,11 @@
 package com.wee0.box.examples.multiModule.action;
 
 import com.wee0.box.beans.annotation.BoxInject;
+import com.wee0.box.code.BizCodeDef;
 import com.wee0.box.examples.multiModule.module1.dao.SysUserDao;
 import com.wee0.box.examples.multiModule.module1.entity.SysUserEntity;
 import com.wee0.box.exception.BizExceptionFactory;
+import com.wee0.box.exception.BoxRuntimeException;
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
 import com.wee0.box.subject.IPasswordToken;
@@ -28,6 +30,7 @@ import com.wee0.box.subject.SubjectContext;
 import com.wee0.box.subject.annotation.BoxRequireLogical;
 import com.wee0.box.subject.annotation.BoxRequirePermissions;
 import com.wee0.box.subject.annotation.BoxRequireRoles;
+import com.wee0.box.util.shortcut.ValidateUtils;
 import com.wee0.box.web.annotation.BoxAction;
 
 import java.util.List;
@@ -54,7 +57,7 @@ public class User {
         return sysUserDao.queryAll();
     }
 
-    @BoxRequireRoles(value = {"admin", "guest"}, logical = BoxRequireLogical.AND)
+    @BoxRequireRoles(value = {"admin", "guest"}, logical = BoxRequireLogical.OR)
     public List<SysUserEntity> findAllUsers() {
         return sysUserDao.findAll();
     }
@@ -65,9 +68,15 @@ public class User {
     }
 
     public boolean login(String loginId, String loginPwd) {
+        if (!ValidateUtils.impl().validatePattern(loginId, "S6-16"))
+            BizExceptionFactory.create(BizCodeDef.ValidateFailed, "登陆标识不合法！");
         ISubject _subject = SubjectContext.getSubject();
         IPasswordToken _passwordToken = SubjectContext.getTokenFactory().createPasswordToken(loginId, loginPwd);
+//        try {
         _subject.login(_passwordToken);
+//        } catch (Exception e) {
+//            throw new BoxRuntimeException("登陆失败！", e);
+//        }
         return true;
     }
 
