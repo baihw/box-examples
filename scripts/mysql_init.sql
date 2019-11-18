@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` char(32) not null comment '唯一标识',
   `user_name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名称',
-  `password` varchar(64) NOT NULL DEFAULT '' COMMENT '用户密码',
+  `user_pwd` varchar(64) NOT NULL DEFAULT '' COMMENT '用户密码',
   `nick_name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户昵称',
   `sex` int(1) NOT NULL DEFAULT '0' COMMENT '性别 0:女 1:男',
   `email` varchar(64) NOT NULL DEFAULT '' COMMENT '邮箱',
@@ -105,8 +105,8 @@ create table if not exists `sys_role_permission_rel`
 
 
 -- 插入测试数据
-insert into sys_user(id, user_name, password) value( '89232296e8a911e9b3700242ac12010a', 'admin', 'admin');
-insert into sys_user(id, user_name, password) value( '0a19ba58e8ab11e9b3700242ac12010a', 'guest', '123456');
+insert into sys_user(id, user_name, user_pwd) value( '89232296e8a911e9b3700242ac12010a', 'admin', 'admin');
+insert into sys_user(id, user_name, user_pwd) value( '0a19ba58e8ab11e9b3700242ac12010a', 'guest', '123456');
 
 insert into sys_role(id, role_name, role_memo) value( '87feedeae99911e99cb80242ac12010a', 'admin', '管理员');
 insert into sys_role(id, role_name, role_memo) value( 'add26716e99911e99cb80242ac12010a', 'guest', '来宾');

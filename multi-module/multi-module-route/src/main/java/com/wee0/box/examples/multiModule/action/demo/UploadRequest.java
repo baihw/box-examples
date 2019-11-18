@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.wee0.box.examples.multiModule.action;
+package com.wee0.box.examples.multiModule.action.demo;
 
 import com.wee0.box.beans.annotation.BoxInject;
 import com.wee0.box.log.ILogger;
@@ -37,10 +37,10 @@ import java.util.List;
  * </pre>
  **/
 @BoxAction
-public class UpDown {
+public class UploadRequest {
 
     // 日志对象
-    private static ILogger log = LoggerFactory.getLogger(UpDown.class);
+    private static ILogger log = LoggerFactory.getLogger(UploadRequest.class);
 
     @BoxInject
     private IUploadRequestUtils uploadRequestUtils;

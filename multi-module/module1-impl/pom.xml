@@ -15,8 +15,8 @@
 
     <dependencies>
 	    <dependency>
-            <groupId>com.wee0.box</groupId>
-            <artifactId>box-api</artifactId>
+            <groupId>com.wee0.box.examples</groupId>
+            <artifactId>module1-api</artifactId>
         </dependency>
     </dependencies>
 

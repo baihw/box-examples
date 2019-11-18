@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.wee0.box.examples.multiModule.action;
+package com.wee0.box.examples.multiModule.action.demo;
 
 import com.wee0.box.beans.annotation.BoxInject;
 import com.wee0.box.code.BizCodeDef;
@@ -23,7 +23,6 @@ import com.wee0.box.examples.multiModule.module1.api.IHello;
 import com.wee0.box.examples.multiModule.module1.dao.SysUserDao;
 import com.wee0.box.examples.multiModule.module1.entity.SysUserEntity;
 import com.wee0.box.exception.BizExceptionFactory;
-import com.wee0.box.exception.BoxRuntimeException;
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
 import com.wee0.box.subject.IPasswordToken;
@@ -36,40 +35,34 @@ import com.wee0.box.subject.annotation.BoxRequireRoles;
 import com.wee0.box.util.shortcut.ValidateUtils;
 import com.wee0.box.web.annotation.BoxAction;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author <a href="78026399@qq.com">白华伟</a>
- * @CreateDate 2019/9/1 22:50
- * @Description 系统用户操作
+ * @CreateDate 2019/11/16 13:50
+ * @Description 异常示例
  * <pre>
  * 补充说明
  * </pre>
  **/
 @BoxAction
-public class User {
+public class Ex {
 
     // 日志对象
-    private static ILogger log = LoggerFactory.getLogger(User.class);
+    private static ILogger log = LoggerFactory.getLogger(Ex.class);
 
-    @BoxInject
-    private SysUserDao sysUserDao;
-
-    public boolean login(String loginId, String loginPwd) {
-        if (!ValidateUtils.impl().validatePattern(loginId, "S6-16"))
-            BizExceptionFactory.create(BizCodeDef.ValidateFailed, "登陆标识不合法！");
-        ISubject _subject = SubjectContext.getSubject();
-        IPasswordToken _passwordToken = SubjectContext.getTokenFactory().createPasswordToken(loginId, loginPwd);
-        _subject.login(_passwordToken);
-        log.debug("login. id:{}, sessionId:{}", _subject.getId(), _subject.getSessionId());
-        return true;
+    /**
+     * 默认的无参业务异常
+     */
+    public void bizDefault() {
+        throw BizExceptionFactory.create();
     }
 
-    public boolean logout() {
-        ISubject _subject = SubjectContext.getSubject();
-        _subject.logout();
-        return true;
+    /**
+     * 带一个参数的业务异常
+     */
+    public void bizArg1() {
+        throw BizExceptionFactory.create(BizCodeDef.S000001, "参数1的值");
     }
 
 }

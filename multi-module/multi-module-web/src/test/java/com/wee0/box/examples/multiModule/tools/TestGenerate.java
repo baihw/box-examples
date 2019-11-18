@@ -2,6 +2,7 @@ package com.wee0.box.examples.multiModule.tools;
 
 import com.wee0.box.sql.ds.DsManager;
 import com.wee0.box.sql.ds.impl.SimpleDsProperty;
+import com.wee0.box.sql.template.ISqlTemplateHelper;
 import com.wee0.box.sql.template.SqlTemplateHelper;
 import com.wee0.box.util.shortcut.DateUtils;
 import org.junit.BeforeClass;
@@ -55,7 +56,19 @@ public class TestGenerate {
         _excludeColumns.add("UPDATE_TIME");
         _excludeColumns.add("UPDATE_USER");
         _excludeColumns.add("IS_DELETED");
+        // 不需要在实体类中包含的表，这里排除关系表的生成。
+        Set<String> _excludeTables = new HashSet<>(12);
+        _excludeTables.add("sys_user_role_rel");
+        _excludeTables.add("sys_role_permission_rel");
+        // 自定义命名策略
+        ISqlTemplateHelper.INamePolicy _namePolicy = new ISqlTemplateHelper.INamePolicy() {
+            @Override
+            public String renameEntity(String original, String current) {
+                // 统一加上Entity后缀。
+                return current + "Entity";
+            }
+        };
         // 调用数据库模板助手类实例生成实体类的方法
-        SqlTemplateHelper.impl().generateEntities(_dataModel, "entity.ftl", _entityDir, _excludeColumns);
+        SqlTemplateHelper.impl().generateEntities(_dataModel, "entity.ftl", _entityDir, _excludeColumns, _excludeTables, _namePolicy);
     }
 }

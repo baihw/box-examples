@@ -4,6 +4,7 @@ import com.wee0.box.examples.multiModule.module1.entity.SysUserEntity;
 import com.wee0.box.sql.annotation.BoxDao;
 import com.wee0.box.sql.dao.IBaseDao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,14 +21,18 @@ public interface SysUserDao extends IBaseDao<SysUserEntity, String> {
 
     List<SysUserEntity> findAll();
 
-    SysUserEntity findOne(String id);
+    List<SysUserEntity> finaAllByPage(Map<String, Object> params);
 
-    int updatePassword(SysUserEntity sysUserEntity);
+    SysUserEntity findById(String id);
 
-    Map selectUserMapLimitOne();
+    Map<String, Object> findLimit1();
 
-    List<Map> nativeQuery1(String sql);
+    List<SysUserEntity> findByCreateTime1(Date createTime);
 
-    List<Map> nativeQuery2(Map sqlMap);
+    List<SysUserEntity> findByCreateTime2(Date createTime);
+
+    Integer updatePassword(String password, String id);
+
+    List<Map<String, Object>> nativeQuery(String sql);
 
 }
