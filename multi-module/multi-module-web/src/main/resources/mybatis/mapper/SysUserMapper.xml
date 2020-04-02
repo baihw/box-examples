@@ -23,7 +23,7 @@
 	</sql>
 
     <!-- 测试查询返回映射实体对象集合，指定响应类型，需要自己处理列与字段映射关系 -->
-    <select id="findAll" resultType="com.wee0.box.testEntities.SysUserEntity">
+    <select id="findAll" resultType="com.wee0.box.examples.multiModule.module1.entity.SysUserEntity">
         SELECT
         <include refid="col_List"/>
         FROM SYS_USER

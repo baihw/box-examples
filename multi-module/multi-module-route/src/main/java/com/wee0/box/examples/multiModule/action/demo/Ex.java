@@ -16,26 +16,13 @@
 
 package com.wee0.box.examples.multiModule.action.demo;
 
-import com.wee0.box.beans.annotation.BoxInject;
-import com.wee0.box.code.BizCodeDef;
-import com.wee0.box.examples.multiModule.action.vo.SimpleUser;
-import com.wee0.box.examples.multiModule.module1.api.IHello;
-import com.wee0.box.examples.multiModule.module1.dao.SysUserDao;
-import com.wee0.box.examples.multiModule.module1.entity.SysUserEntity;
+import com.wee0.box.BoxConfig;
 import com.wee0.box.exception.BizExceptionFactory;
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
-import com.wee0.box.subject.IPasswordToken;
-import com.wee0.box.subject.ISubject;
-import com.wee0.box.subject.SubjectContext;
-import com.wee0.box.subject.annotation.BoxRequireIgnore;
-import com.wee0.box.subject.annotation.BoxRequireLogical;
-import com.wee0.box.subject.annotation.BoxRequirePermissions;
-import com.wee0.box.subject.annotation.BoxRequireRoles;
-import com.wee0.box.util.shortcut.ValidateUtils;
 import com.wee0.box.web.annotation.BoxAction;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author <a href="78026399@qq.com">白华伟</a>
@@ -54,7 +41,7 @@ public class Ex {
     /**
      * 默认的无参业务异常
      */
-    public void bizDefault() {
+    public void bizDefault(HttpServletResponse response) {
         throw BizExceptionFactory.create();
     }
 
@@ -62,7 +49,7 @@ public class Ex {
      * 带一个参数的业务异常
      */
     public void bizArg1() {
-        throw BizExceptionFactory.create(BizCodeDef.S000001, "参数1的值");
+        throw BizExceptionFactory.create(BoxConfig.impl().getConfigObject().getSystemErrorInfoBizCode(), "参数1的值");
     }
 
 }

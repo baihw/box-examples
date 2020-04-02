@@ -16,15 +16,22 @@
 
 package com.wee0.box.examples.multiModule.action.demo;
 
+import com.wee0.box.BoxConfig;
 import com.wee0.box.beans.annotation.BoxInject;
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
+import com.wee0.box.util.shortcut.IoUtils;
 import com.wee0.box.web.annotation.BoxAction;
+import com.wee0.box.web.annotation.BoxIgnoreReturnValue;
 import com.wee0.box.web.servlet.IUploadFile;
 import com.wee0.box.web.servlet.IUploadRequest;
 import com.wee0.box.web.servlet.IUploadRequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +66,22 @@ public class UploadRequest {
             _names.add(_file2.getName());
         }
         return _names;
+    }
+
+    @BoxIgnoreReturnValue
+    public void download(HttpServletResponse response) {
+        String _fileName = "word1Template.docx";
+//        response.setHeader("content-type", "application/octet-stream");
+//        response.setContentType("application/octet-stream");
+        // 设置强制下载不打开
+        response.setContentType("application/force-download");
+        response.addHeader("Content-Disposition", "attachment;fileName=" + _fileName);
+
+        try (InputStream _in = BoxConfig.impl().getResourceAsStream("templates/" + _fileName);) {
+            IoUtils.impl().copy(_in, response.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.7.RELEASE</version>
+        <version>2.1.11.RELEASE</version>
     </parent>
 
     <groupId>com.wee0.box.examples</groupId>
@@ -25,7 +25,7 @@
         <maven.compiler.target>${jdk.default}</maven.compiler.target>
         <java.version>${jdk.default}</java.version>
 
-        <box.version>0.1.11</box.version>
+        <box.version>0.2.4</box.version>
         <mysql.version>5.1.48</mysql.version>
         <druid.version>1.1.20</druid.version>
         <mybatis.version>3.5.2</mybatis.version>
@@ -85,6 +85,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -16,28 +16,20 @@
 
 package com.wee0.box.examples.multiModule.action;
 
+import com.wee0.box.BoxConfig;
 import com.wee0.box.beans.annotation.BoxInject;
-import com.wee0.box.code.BizCodeDef;
-import com.wee0.box.examples.multiModule.action.vo.SimpleUser;
-import com.wee0.box.examples.multiModule.module1.api.IHello;
 import com.wee0.box.examples.multiModule.module1.dao.SysUserDao;
-import com.wee0.box.examples.multiModule.module1.entity.SysUserEntity;
 import com.wee0.box.exception.BizExceptionFactory;
-import com.wee0.box.exception.BoxRuntimeException;
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
 import com.wee0.box.subject.IPasswordToken;
 import com.wee0.box.subject.ISubject;
 import com.wee0.box.subject.SubjectContext;
-import com.wee0.box.subject.annotation.BoxRequireIgnore;
-import com.wee0.box.subject.annotation.BoxRequireLogical;
-import com.wee0.box.subject.annotation.BoxRequirePermissions;
-import com.wee0.box.subject.annotation.BoxRequireRoles;
 import com.wee0.box.util.shortcut.ValidateUtils;
 import com.wee0.box.web.annotation.BoxAction;
 
-import java.util.Arrays;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author <a href="78026399@qq.com">白华伟</a>
@@ -58,17 +50,21 @@ public class User {
 
     public boolean login(String loginId, String loginPwd) {
         if (!ValidateUtils.impl().validatePattern(loginId, "S6-16"))
-            BizExceptionFactory.create(BizCodeDef.ValidateFailed, "登陆标识不合法！");
+            BizExceptionFactory.create(BoxConfig.impl().getConfigObject().getSystemErrorInfoBizCode(), "登陆标识不合法！");
         ISubject _subject = SubjectContext.getSubject();
+        if (_subject.isLogin()) {
+            log.debug("{} already login.", _subject.getSessionId());
+            return true;
+        }
         IPasswordToken _passwordToken = SubjectContext.getTokenFactory().createPasswordToken(loginId, loginPwd);
         _subject.login(_passwordToken);
         log.debug("login. id:{}, sessionId:{}", _subject.getId(), _subject.getSessionId());
         return true;
     }
 
-    public boolean logout() {
+    public boolean logout(HttpServletRequest request, HttpServletResponse response) {
         ISubject _subject = SubjectContext.getSubject();
-        _subject.logout();
+        _subject.logout(request, response);
         return true;
     }
 
