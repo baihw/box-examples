@@ -35,7 +35,7 @@
         <java.version>${jdk.default}</java.version>
 
         <!-- 主要依赖库版本 -->
-        <box.version>0.2.4</box.version>
+        <box.version>0.2.6</box.version>
         <spring.boot.version>2.1.11.RELEASE</spring.boot.version>
         <druid.version>1.1.20</druid.version>
         <h2.version>1.4.199</h2.version>

@@ -21,11 +21,6 @@ package com.wee0.box.examples.multiModule;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.ImportResource;
-
-import java.sql.JDBCType;
-import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * @author <a href="78026399@qq.com">白华伟</a>
