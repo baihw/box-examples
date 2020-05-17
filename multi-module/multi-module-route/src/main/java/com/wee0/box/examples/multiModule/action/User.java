@@ -78,13 +78,12 @@ public class User {
         String _cacheKey = "BoxQueryCode_" + "_" + mobile + "_" + code;
         if (!CacheManager.impl().getDefaultCache().exists(_cacheKey)) {
             // 验证码不存在，或者已过期。
-            log.debug("invalid code: {}", code);
-            return null;
+            return "invalid code: " + code;
         }
         ISubject _subject = SubjectContext.getSubject();
         if (_subject.isLogin()) {
             log.debug("already login {}.", _subject);
-            return null;
+            return _subject.getToken();
         }
         IPasswordToken _passwordToken = SubjectContext.getTokenFactory().createPasswordToken(mobile, code);
 
@@ -95,7 +94,7 @@ public class User {
             return _subject.getToken();
         } catch (RuntimeException e) {
             //登出（清除cookie)
-            return null;
+            return e.getMessage();
         }
 
     }
@@ -116,6 +115,7 @@ public class User {
             _subject.login(_passwordToken, request, response);
         } catch (RuntimeException e) {
             //登出（清除cookie)
+            log.warn("login error!", e);
             _subject.logout(request, response);
             return false;
         }
