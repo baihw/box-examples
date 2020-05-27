@@ -92,6 +92,7 @@ CREATE TABLE `sys_user` (
   `sex` int(1) NOT NULL DEFAULT '0' COMMENT '性别 0:女 1:男',
   `email` varchar(64) NOT NULL DEFAULT '' COMMENT '邮箱',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '移动电话',
+  `wx_unionId` varchar(32) NOT NULL DEFAULT '' COMMENT '微信应用内身份唯一标识',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
   `create_user` char(32) DEFAULT NULL COMMENT '记录创建用户',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录修改时间',
@@ -102,9 +103,9 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('0a19ba58e8ab11e9b3700242ac12010a', 'guest', '123456', '', '0', 'a@a.com', '13112345678', '2019-11-15 13:27:35', null, '2019-11-15 13:27:35', null, '0');
+INSERT INTO `sys_user` VALUES ('0a19ba58e8ab11e9b3700242ac12010a', 'guest', '123456', '', '0', 'a@a.com', '13112345678', '', '2019-11-15 13:27:35', null, '2019-11-15 13:27:35', null, '0');
 
-INSERT INTO `sys_user` VALUES ('89232296e8a911e9b3700242ac12010a', 'admin', 'admin', '', '0', 'b@b.com', '13212345678', '2019-11-15 13:27:35', null, '2019-11-18 13:51:29', null, '0');
+INSERT INTO `sys_user` VALUES ('89232296e8a911e9b3700242ac12010a', 'admin', 'admin', '', '0', 'b@b.com', '13212345678', 'o_2Fww57cYaRSheIDAaoOB_nGhXE', '2019-11-15 13:27:35', null, '2019-11-18 13:51:29', null, '0');
 
 -- ----------------------------
 -- Table structure for `sys_user_role_rel`

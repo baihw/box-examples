@@ -14,34 +14,42 @@
  * limitations under the License.
  */
 
-package com.wee0.box.examples.multiModule.action.plugin;
+package com.wee0.box.examples.allInOne.action.demo;
 
+import com.wee0.box.BoxConfig;
+import com.wee0.box.exception.BizExceptionFactory;
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
-import com.wee0.box.plugin.PluginManager;
-import com.wee0.box.plugins.storage.ICloudStoragePlugin;
 import com.wee0.box.web.annotation.BoxAction;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author <a href="78026399@qq.com">白华伟</a>
- * @CreateDate 2020/1/1 8:02
- * @Description minio插件调用示例
+ * @CreateDate 2019/11/16 13:50
+ * @Description 异常示例
  * <pre>
  * 补充说明
  * </pre>
  **/
 @BoxAction
-public class Minio {
+public class Ex {
 
     // 日志对象
-    private static ILogger log = LoggerFactory.getLogger(Minio.class);
+    private static ILogger log = LoggerFactory.getLogger(Ex.class);
 
-    private ICloudStoragePlugin _storage = PluginManager.getPlugin(ICloudStoragePlugin.class);
+    /**
+     * 默认的无参业务异常
+     */
+    public void bizDefault(HttpServletResponse response) {
+        throw BizExceptionFactory.create();
+    }
 
-    public boolean exists(String id) {
-        _storage.getUploadForm("", 300, "");
-        return _storage.exists(id);
-//        return _storage.exists("/1.jpg");
+    /**
+     * 带一个参数的业务异常
+     */
+    public void bizArg1() {
+        throw BizExceptionFactory.create(BoxConfig.impl().getConfigObject().getSystemErrorInfoBizCode(), "参数1的值");
     }
 
 }

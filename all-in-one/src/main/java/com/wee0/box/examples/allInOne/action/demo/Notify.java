@@ -14,34 +14,38 @@
  * limitations under the License.
  */
 
-package com.wee0.box.examples.multiModule.action.plugin;
+package com.wee0.box.examples.allInOne.action.demo;
 
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
-import com.wee0.box.plugin.PluginManager;
-import com.wee0.box.plugins.storage.ICloudStoragePlugin;
+import com.wee0.box.notify.sms.SmsHelper;
+import com.wee0.box.struct.CMD;
+import com.wee0.box.subject.annotation.BoxRequireLogical;
+import com.wee0.box.subject.annotation.BoxRequirePermissions;
+import com.wee0.box.subject.annotation.BoxRequireRoles;
 import com.wee0.box.web.annotation.BoxAction;
 
 /**
  * @author <a href="78026399@qq.com">白华伟</a>
- * @CreateDate 2020/1/1 8:02
- * @Description minio插件调用示例
+ * @CreateDate 2020/3/28 10:12
+ * @Description 通知示例
  * <pre>
  * 补充说明
  * </pre>
  **/
 @BoxAction
-public class Minio {
+public class Notify {
 
     // 日志对象
-    private static ILogger log = LoggerFactory.getLogger(Minio.class);
+    private static ILogger log = LoggerFactory.getLogger(Notify.class);
 
-    private ICloudStoragePlugin _storage = PluginManager.getPlugin(ICloudStoragePlugin.class);
-
-    public boolean exists(String id) {
-        _storage.getUploadForm("", 300, "");
-        return _storage.exists(id);
-//        return _storage.exists("/1.jpg");
+    // 需要具备admin角色
+    public CMD sms() {
+        java.util.Map<String, String> _params = new java.util.HashMap<>();
+        _params.put("PhoneNumbers", "1311111111");
+        _params.put("TemplateParam", "{\"code\":\"123456\"}");
+        return SmsHelper.impl().sendSms(_params);
     }
+
 
 }
