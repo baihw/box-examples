@@ -31,6 +31,7 @@ import com.wee0.box.web.annotation.BoxAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 /**
  * @author <a href="78026399@qq.com">白华伟</a>
@@ -96,6 +97,22 @@ public class User {
             return e.getMessage();
         }
 
+    }
+
+    /**
+     * @return 获取微信登陆地址
+     */
+    @BoxRequireIgnore
+    public String getWxLoginUrl() {
+        final String _appId = "xx";
+        final String _redirectUri = "http%3A%2F%2Fxx.xx.com%2Fcallback%2Fwx";
+        final String _state = UUID.randomUUID().toString();
+        StringBuilder _builder = new StringBuilder();
+        _builder.append("https://open.weixin.qq.com/connect/qrconnect?appid=").append(_appId);
+        _builder.append("&redirect_uri=").append(_redirectUri);
+        _builder.append("&response_type=code&scope=snsapi_login&state=").append(_state);
+        _builder.append("#wechat_redirect");
+        return _builder.toString();
     }
 
     public boolean wxLogin(HttpServletRequest request, HttpServletResponse response) {
