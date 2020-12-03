@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>Error1</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>出错了。。。</title>
+    <link rel="stylesheet" href="/lib/bootstrap/3.3.7/css/bootstrap.css"/>
 </head>
 <body>
-Error1
+
+<h1>出错了!</h1>
 <hr/>
-Body1
+<div id="errorInfo"></div>
+
+<script src="/lib/jquery/3.1.0/jquery.min.js"></script>
+<script src="/lib/bootstrap/3.3.7/js/bootstrap.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script src="/lib/demo/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        let _errorData = $.box().getUrlParam("data");
+        console.debug("errorData:", _errorData);
+        // _errorData = decodeURI(_errorData);
+        // console.debug("errorData.decode:", _errorData);
+        $("#errorInfo").html(_errorData);
+    });
+</script>
 </body>
 </html>

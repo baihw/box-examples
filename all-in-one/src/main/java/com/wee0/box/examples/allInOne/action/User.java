@@ -19,18 +19,24 @@ package com.wee0.box.examples.allInOne.action;
 import com.wee0.box.BoxConfig;
 import com.wee0.box.beans.annotation.BoxInject;
 import com.wee0.box.cache.CacheManager;
+import com.wee0.box.examples.allInOne.beans.WxApiHelper;
 import com.wee0.box.examples.allInOne.dao.SysUserDao;
+import com.wee0.box.examples.allInOne.entity.SysUserEntity;
 import com.wee0.box.exception.BizExceptionFactory;
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
+import com.wee0.box.sql.SqlHelper;
 import com.wee0.box.subject.*;
 import com.wee0.box.subject.annotation.BoxRequireIgnore;
-import com.wee0.box.util.shortcut.CheckUtils;
-import com.wee0.box.util.shortcut.ValidateUtils;
+import com.wee0.box.util.IHttpUtils;
+import com.wee0.box.util.shortcut.*;
 import com.wee0.box.web.annotation.BoxAction;
+import com.wee0.box.web.annotation.BoxParam;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -50,9 +56,22 @@ public class User {
     @BoxInject
     private SysUserDao sysUserDao;
 
+    @BoxInject
+    private WxApiHelper wxApiHelper;
+
+    /**
+     * @return 当前登陆用户信息
+     */
+    public SysUserEntity getUserInfo() {
+        ISubject _subject = SubjectContext.getSubject();
+        if (!_subject.isLogin())
+            return null;
+        return sysUserDao.findById(_subject.getId());
+    }
+
     // 获取手机验证码
     @BoxRequireIgnore
-    public String getCode(String mobile) {
+    public String getCode(@BoxParam(pattern = "*6-12", message = "手机号必须在6到12位。") String mobile) {
         if (!ValidateUtils.impl().validatePattern(mobile, "m"))
             BizExceptionFactory.create(BoxConfig.impl().getConfigObject().getSystemErrorInfoBizCode(), "手机号码不合法！");
         // 根据手机号查询用户是否存在？同时取得用户唯一标识。
@@ -100,12 +119,27 @@ public class User {
     }
 
     /**
+     * 通过自定义认证域登陆
+     *
+     * @return
+     */
+    @BoxRequireIgnore
+    public String customLogin(String code, HttpServletRequest request, HttpServletResponse response) {
+        log.debug("customLogin... code: {}", code);
+        log.debug("SubjectContext.impl: {}", SubjectContext.impl());
+        log.debug("tokenFactory: {}", SubjectContext.getTokenFactory());
+        ICustomToken _token = SubjectContext.getTokenFactory().createCustomToken("0a19ba58e8ab11e9b3700242ac12010a", "xx");
+        doWebLogin(_token, request, response);
+        return "custom...";
+    }
+
+    /**
      * @return 获取微信登陆地址
      */
     @BoxRequireIgnore
     public String getWxLoginUrl() {
-        final String _appId = "xx";
-        final String _redirectUri = "http%3A%2F%2Fxx.xx.com%2Fcallback%2Fwx";
+        final String _appId = "wx30bb37bf8cdcc9a6";
+        final String _redirectUri = "http%3A%2F%2Ftm.kkkangfu.com%2Fcallback%2Fwx";
         final String _state = UUID.randomUUID().toString();
         StringBuilder _builder = new StringBuilder();
         _builder.append("https://open.weixin.qq.com/connect/qrconnect?appid=").append(_appId);
@@ -117,8 +151,20 @@ public class User {
 
     public boolean wxLogin(HttpServletRequest request, HttpServletResponse response) {
         String _code = CheckUtils.checkNotTrimEmpty(request.getParameter("code"), "code cannot be empty!");
-        IWeiXinToken _weiXinToken = SubjectContext.getTokenFactory().createWeiXinToken(_code, null);
-        return doWebLogin(_weiXinToken, request, response);
+        log.debug("_code: {}", _code);
+
+        //:todo 使用 code 去微信服务器获取token。
+        //:todo 使用 token 去微信服务器获取用户头像与 unionId 等信息。
+        //:todo 使用 unionId 获取用户唯一标识。
+        //:todo 如果用户不存在，执行创建用户流程。
+        //:todo 如果用户存在，登陆成功，返回用户绑定的手机号等信息。
+
+//        String _userId = SqlHelper.impl().queryScalar(this.queryUser1, new Object[]{_unionId}, String.class);
+//        if (null == _userId || 0 == (_userId = _userId.trim()).length())
+//            throw new IncorrectCredentialsException("认证失败! Invalid unionId: " + _unionId);
+
+        ICustomToken _token = SubjectContext.getTokenFactory().createCustomToken("0a19ba58e8ab11e9b3700242ac12010a", "xx");
+        return doWebLogin(_token, request, response);
     }
 
     // 账号密码登陆

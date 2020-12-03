@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.wee0.box.examples.multiModule.action.plugin;
+package com.wee0.box.examples.allInOne.action.demo.plugins;
 
 import com.wee0.box.log.ILogger;
 import com.wee0.box.log.LoggerFactory;
@@ -22,10 +22,12 @@ import com.wee0.box.plugin.PluginManager;
 import com.wee0.box.plugins.storage.ICloudStoragePlugin;
 import com.wee0.box.web.annotation.BoxAction;
 
+import java.util.Map;
+
 /**
  * @author <a href="78026399@qq.com">白华伟</a>
- * @CreateDate 2020/1/1 8:02
- * @Description minio插件调用示例
+ * @CreateDate 2020/8/15 7:02
+ * @Description MinIo操作示例
  * <pre>
  * 补充说明
  * </pre>
@@ -36,12 +38,43 @@ public class Minio {
     // 日志对象
     private static ILogger log = LoggerFactory.getLogger(Minio.class);
 
-    private ICloudStoragePlugin _storage = PluginManager.getPlugin(ICloudStoragePlugin.class);
+    // 云存储插件实现类实例
+    private static final ICloudStoragePlugin _IMPL = PluginManager.getPlugin(ICloudStoragePlugin.class);
 
-    public boolean exists(String id) {
-        _storage.getUploadForm("", 300, "");
-        return _storage.exists(id);
-//        return _storage.exists("/1.jpg");
+    /**
+     * 获取文件上传授权数据
+     *
+     * @param fid 文件唯一标识
+     * @return 上传授权数据
+     */
+    public String getPutUrl(String fid) {
+        return _IMPL.getUploadUrl(fid);
     }
+
+    /**
+     * 获取文件上传授权数据
+     *
+     * @param fid 文件唯一标识
+     * @return 上传授权数据
+     */
+    public Map getUploadUrl(String fid) {
+        return _IMPL.getUploadForm(fid);
+    }
+
+    /**
+     * 获取文件授权下载地址
+     *
+     * @param fid 文件唯一标识
+     * @return 授权下载地址
+     */
+    public String getDownloadUrl(String fid) {
+        return _IMPL.getDownloadUrl(fid, 300);
+    }
+
+    // about
+    public String about() {
+        return _IMPL.toString();
+    }
+
 
 }

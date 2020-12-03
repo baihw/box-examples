@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>登陆</title>
+    <link rel="stylesheet" href="lib/bootstrap/3.3.7/css/bootstrap.css"/>
+    <style>
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #eee;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+
+        .form-signin .form-signin-heading,
+        .form-signin .checkbox {
+            margin-bottom: 10px;
+        }
+
+        .form-signin .checkbox {
+            font-weight: normal;
+        }
+
+        .form-signin .form-control {
+            position: relative;
+            height: auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <form class="form-signin">
+        <h2 class="form-signin-heading">请先登陆</h2>
+        <label for="loginIdInput" class="sr-only">账号</label>
+        <input type="email" id="loginIdInput" value="admin" class="form-control" placeholder="账号" required autofocus/>
+        <label for="loginPwdInput" class="sr-only">密码</label>
+        <input type="password" id="loginPwdInput" value="admin" class="form-control" placeholder="密码" required/>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> 记住我
+            </label>
+        </div>
+        <button id="loginBtn" class="btn btn-lg btn-primary btn-block" type="button">登陆</button>
+    </form>
+
+    <div id="testDiv1">
+        <div>默认账号1：admin，密码：admin</div>
+        <div>默认账号2：guest，密码：123456</div>
+    </div>
+
+    <form class="form-sign">
+        <h2 class="form-signin-heading">微信登陆</h2>
+        <label for="loginCodeInput" class="sr-only">Code</label>
+        <input type="text" id="loginCodeInput" class="form-control" placeholder="Code" required autofocus/>
+        <button id="wxLoginBtn" class="btn btn-lg btn-primary btn-block" type="button">登陆</button>
+    </form>
+
+</div> <!-- /container -->
+
+<script src="lib/jquery/3.1.0/jquery.min.js"></script>
+<script src="lib/bootstrap/3.3.7/js/bootstrap.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script src="lib/demo/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#loginBtn").click(() => {
+            // let _box = $.box({baseApi: 'http://127.0.0.1:9000/api/'});
+            let _box = $.box();
+            console.debug('_box:', _box);
+            let _loginId = $("#loginIdInput").val();
+            let _loginPwd = $("#loginPwdInput").val();
+            _box.getJson("user/login", {'loginId': _loginId, 'loginPwd': _loginPwd}, (_data) => {
+                console.debug("_data", _data);
+                if (_data.data) {
+                    window.location.href = "index.html";
+                }
+            });
+        });
+
+        $("#wxLoginBtn").click(() => {
+            console.debug("wxLogin...")
+            $.box().getJson("user/wxLogin")
+        });
+    });
+</script>
+</body>
+</html>

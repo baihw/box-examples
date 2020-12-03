@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <base href="http://127.0.0.1:9000/"/>
+    <title>MinIo测试</title>
+    <link rel="stylesheet" href="lib/bootstrap/3.3.7/css/bootstrap.css"/>
+</head>
+<body>
+<h2>MinIo测试</h2>
+<hr/>
+
+<div class="container">
+    <div class="row">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="file1">文件1</label>
+                <input id="file1" name="file1" type="file"/>
+            </div>
+            <button id="btn1" class="btn btn-default" type="button">上传1</button>
+        </form>
+    </div>
+    <div class="row" style="height: 2rem;"></div>
+    <div class="row">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="file2">文件2</label>
+                <input id="file2" name="file2" type="file"/>
+            </div>
+            <button id="btn2" class="btn btn-default" type="button">上传2</button>
+        </form>
+    </div>
+</div>
+<div id="img1">
+    <img id="demoImg"/>
+</div>
+
+<script src="lib/jquery/3.1.0/jquery.min.js"></script>
+<script src="lib/bootstrap/3.3.7/js/bootstrap.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script src="lib/demo/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        console.trace("test - min io");
+
+        const _apiUploadUrl = "demo/plugins/minio/getUploadUrl";
+        const _apiDownloadUrl = "demo/plugins/minio/getDownloadUrl";
+        // const _uploadUrl = "http://192.168.1.240:9000";
+
+        const _box = $.box();
+        $("#btn1").on("click", function () {
+            const _file1 = $('#file1')[0].files[0];
+            // 根据业务规则设置文件上传后的唯一标识，这里直接使用文件名。
+            const _fid = _file1.name;
+            console.trace("fid:" + _fid + ', type:' + _file1.type);
+            _box.getJson(_apiUploadUrl, {"fid": "demoTest/1.jpg"}, (_data) => {
+                console.debug("formData:", _data);
+
+                let _formUrl;
+                const _formData = new FormData();
+                const _resultData = _data.data;
+                for (let _formKey in _resultData) {
+                    if ('url' == _formKey) {
+                        _formUrl = _resultData[_formKey];
+                        continue;
+                    }
+                    _formData.append(_formKey, _resultData[_formKey]);
+                }
+                _formData.append('file', _file1);
+                // 让服务端返回200,不然默认会返回204
+                _formData.append('success_action_status','200');
+                _box.post(_formUrl, _formData, (_data) => {
+                    console.debug("_data:", _data);
+
+                    _box.getJson(_apiDownloadUrl, {"fid": "demoTest/1.jpg"}, (_data) => {
+                        console.debug("formData:", _data);
+                        $("#demoImg").attr('src', _data.data);
+                    });
+                })
+            });
+
+        });
+    });
+</script>
+</body>
+</html>

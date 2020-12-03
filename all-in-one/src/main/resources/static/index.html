@@ -1,12 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="lib/bootstrap/3.3.7/css/bootstrap.css"/>
 </head>
 <body>
-Index
+
+<h1>Hello, <span id="loginUserName"></span>!</h1>
+
+<span id="logoutSpan">登出</span>
 <hr/>
-Body
+
+<ul>
+    <li><a href="pages/test/minio.html">Test - MinIo</a></li>
+    <li><a href="pages/test/minio.html">Test - MinIo</a></li>
+    <li><a href="pages/test/minio.html">Test - MinIo</a></li>
+</ul>
+
+
+<script src="lib/jquery/3.1.0/jquery.min.js"></script>
+<script src="lib/bootstrap/3.3.7/js/bootstrap.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script src="lib/demo/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        console.trace("hello...");
+        $.box().getJson("user/getUserInfo", null, (_data) => {
+            console.trace("data:", _data);
+            let _userInfo = _data.data;
+            console.debug("_userInfo:", _userInfo);
+            let _userName = _userInfo.userName;
+            console.trace("_userName:", _userName);
+            $("#loginUserName").html(_userName);
+        })
+        $("#logoutSpan").click(() => {
+            console.log("logout...");
+            $.box().getJson("user/logout", null, (_data) => {
+                console.log("logout data:", _data);
+                if ("200" == _data.code) {
+                    window.location.href = "login.html";
+                }
+            })
+        });
+    });
+</script>
 </body>
 </html>

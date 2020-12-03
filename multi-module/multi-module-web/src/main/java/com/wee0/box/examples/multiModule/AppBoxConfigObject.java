@@ -44,5 +44,9 @@ public class AppBoxConfigObject implements IBoxConfigObject {
         return BizCodeDef.Unauthorized;
     }
 
+    @Override
+    public IBizCode getParamsErrorBizCode() {
+        return BizCodeDef.ParamsError;
+    }
 
 }
