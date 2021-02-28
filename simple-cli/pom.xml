@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.wee0.box.examples</groupId>
+    <artifactId>simple-cli</artifactId>
+    <version>0.1.0</version>
+    <name>${project.artifactId}</name>
+    <description>Simple cli project for Box</description>
+
+    <properties>
+	    <encoding.default>UTF-8</encoding.default>
+        <jdk.default>1.8</jdk.default>
+        <!-- 项目基础配置 -->
+        <project.build.sourceEncoding>${encoding.default}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${encoding.default}</project.reporting.outputEncoding>
+        <maven.compiler.source>${jdk.default}</maven.compiler.source>
+        <maven.compiler.target>${jdk.default}</maven.compiler.target>
+        <java.version>${jdk.default}</java.version>
+
+		<box.version>0.3.8</box.version>
+		<h2.version>1.4.199</h2.version>
+		<mysql.version>5.1.48</mysql.version>
+		<oracle.version>12.1.0.1-atlassian-hosted</oracle.version>
+        <druid.version>1.1.20</druid.version>
+        <mybatis.version>3.5.6</mybatis.version>
+        <jedis.version>3.1.0</jedis.version>
+        <caffeine.version>2.6.2</caffeine.version>
+        <shiro.version>1.3.2</shiro.version>
+        <commons-fileupload.version>1.4</commons-fileupload.version>
+        <freemarker.version>2.3.29</freemarker.version>
+
+        <logback.version>1.2.3</logback.version>
+		<junit.version>4.12</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <!--<mockito.version>2.28.2</mockito.version>-->
+        <mockito.version>3.5.10</mockito.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+	    <dependency>
+            <groupId>com.wee0.box</groupId>
+            <artifactId>box-impl</artifactId>
+            <version>${box.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+			<scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+		<dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>${oracle.version}</version>
+			<scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+			<scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+			<scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+			<scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+			<scope>provided</scope>
+            <optional>true</optional>
+        </dependency> -->
+
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${jdk.default}</source>
+                    <target>${jdk.default}</target>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
+
+            <!--
+			<plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+			  <version>3.2.0</version>
+              <configuration>
+                <archive>
+                  <manifest>
+                    <mainClass>${start-class}</mainClass>
+                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                  </manifest>
+                </archive>
+              </configuration>
+            </plugin> -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.apache.poi:*:*</include>
+                                </includes>
+                            </artifactSet>
+                            <!--<transformers>-->
+                                <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />-->
+                                <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+                                    <!--<mainClass>${start-class}</mainClass>-->
+                                    <!--<X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>-->
+                                    <!--<X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>-->
+                                <!--</transformer>-->
+                            <!--</transformers>-->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
