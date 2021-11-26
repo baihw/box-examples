@@ -32,7 +32,7 @@ import java.util.Map;
  * 补充说明
  * </pre>
  **/
-@BoxAction
+//@BoxAction
 public class Minio {
 
     // 日志对象

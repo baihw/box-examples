@@ -4,15 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.11.RELEASE</version>
+        <groupId>com.wee0.box.examples</groupId>
+        <artifactId>multi-module-parent</artifactId>
+        <version>0.1.0</version>
     </parent>
 
-    <groupId>com.wee0.box.examples</groupId>
     <artifactId>multi-module-web</artifactId>
     <name>${project.artifactId}</name>
-    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -24,6 +22,7 @@
         <maven.compiler.source>${jdk.default}</maven.compiler.source>
         <maven.compiler.target>${jdk.default}</maven.compiler.target>
         <java.version>${jdk.default}</java.version>
+        <mainClass>com.wee0.box.examples.multiModule.App</mainClass>
 
         <box.version>0.3.8</box.version>
         <mysql.version>5.1.48</mysql.version>
@@ -35,6 +34,18 @@
         <freemarker.version>2.3.29</freemarker.version>
     </properties>
 
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -85,16 +96,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -108,9 +109,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
                 <configuration>
+                    <mainClass>${mainClass}</mainClass>
                     <fork>true</fork>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
